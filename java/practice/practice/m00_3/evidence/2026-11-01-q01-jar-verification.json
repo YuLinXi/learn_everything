@@ -1,0 +1,36 @@
+{
+  "actor": "assistant verification, not user replay",
+  "time": "2026-11-01T14:31:54.936983+08:00",
+  "cwd": "/Users/yu/Desktop/yumengyuan/learn_everything/java/practice/practice/m00_3/project",
+  "results": [
+    {
+      "command": [
+        "mvn",
+        "-version"
+      ],
+      "exit_code": 0,
+      "output": "Apache Maven 3.9.16 (2bdd9fddda4b155ebf8000e807eb73fd829a51d5)\nMaven home: /opt/homebrew/Cellar/maven/3.9.16/libexec\nJava version: 21.0.11, vendor: Homebrew, runtime: /opt/homebrew/Cellar/openjdk@21/21.0.11/libexec/openjdk.jdk/Contents/Home\nDefault locale: zh_CN_#Hans, platform encoding: UTF-8\nOS name: \"mac os x\", version: \"26.3.1\", arch: \"aarch64\", family: \"mac\"\n"
+    },
+    {
+      "command": [
+        "jar",
+        "tf",
+        "/Users/yu/Desktop/yumengyuan/learn_everything/java/practice/practice/m00_3/project/target/group-name-demo-1.0-SNAPSHOT.jar"
+      ],
+      "exit_code": 0,
+      "output": "META-INF/\nMETA-INF/MANIFEST.MF\nm00_2/\nMETA-INF/maven/\nMETA-INF/maven/com.example.learning/\nMETA-INF/maven/com.example.learning/group-name-demo/\nm00_2/ValidationDemo.class\nMETA-INF/maven/com.example.learning/group-name-demo/pom.xml\nMETA-INF/maven/com.example.learning/group-name-demo/pom.properties\n"
+    },
+    {
+      "command": [
+        "java",
+        "-cp",
+        "/Users/yu/Desktop/yumengyuan/learn_everything/java/practice/practice/m00_3/project/target/group-name-demo-1.0-SNAPSHOT.jar",
+        "m00_2.ValidationDemo",
+        "  基本信息  "
+      ],
+      "exit_code": 0,
+      "output": "基本信息\n"
+    }
+  ],
+  "original_failure_cause": "unknown; student submission omitted ERROR lines; current package succeeds"
+}

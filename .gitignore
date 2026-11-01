@@ -1,0 +1,36 @@
+# macOS 文件元数据
+.DS_Store
+._*
+
+# 本机 IDE 配置
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# 本机环境变量；示例配置可以提交
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# 编辑器临时文件
+*.swp
+*.swo
+*~
+
+# Java 编译输出与构建缓存
+*.class
+/java/**/target/
+/java/**/out/
+/java/**/build/
+.gradle/
+hs_err_pid*.log
+replay_pid*.log
+
+# 公司／参考工程由各自仓库管理，本仓库仅保留目录说明
+/java/projects/*
+!/java/projects/README.md

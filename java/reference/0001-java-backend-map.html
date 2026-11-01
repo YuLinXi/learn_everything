@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Java 后端速查 · 从 TypeScript 到请求链路</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<main>
+  <nav aria-label="速查导航"><a href="../lessons/0001-trace-java-interface.html">返回第一课</a><a href="../ROADMAP.md">学习路线</a><a href="../PROJECT_MAP.md">真实源码位置</a></nav>
+  <header>
+    <div class="eyebrow">Field Notes / Reference 01</div>
+    <h1>Java 后端，先记住这些坐标。</h1>
+    <p class="lede">把熟悉的前端经验迁移过来，同时留意类型、运行时与数据边界。</p>
+    <div class="meta"><span>可打印速查</span><span>资料与源码核对：2026-10-31</span><span>阅读不等于掌握</span></div>
+  </header>
+  <h2 id="interface">TS 经验 → Java 中要核对的差异</h2>
+  <table>
+    <thead><tr><th scope="col">已有经验</th><th scope="col">Java 中的落点</th><th scope="col">最常见边界</th></tr></thead>
+    <tbody>
+      <tr><td>interface 约定形状</td><td>接口声明能力，类显式 implements</td><td>Java 接口可参与运行时类型判断；泛型参数通常擦除。不要直接套用 TS 的结构兼容规则。</td></tr>
+      <tr><td>对象与函数</td><td>类、实例、构造器、实例/静态方法</td><td>接口声明类型与实际对象类型可不同；访问范围和重写规则需由编译器验证。</td></tr>
+      <tr><td>number</td><td>int / long / double / BigDecimal</td><td>金额选择与舍入需明确；long ID 返回 JS 可能越过安全整数范围。</td></tr>
+      <tr><td>Array / Map</td><td>List / Set / Map</td><td>关注泛型、空值、有序性、重复键与 equals/hashCode；Stream 是处理方式。</td></tr>
+      <tr><td>undefined / null</td><td>null 与可空包装类型</td><td>基本类型不承载 null；拆箱可能抛空指针。Optional 并不自动解决所有空值问题。</td></tr>
+      <tr><td>异步与事件循环</td><td>请求线程、共享 Bean、线程池</td><td>单例中的可变字段可能跨请求共享；请求数据优先使用局部变量。</td></tr>
+      <tr><td>前端表单校验</td><td>后端绑定、校验、授权和数据库约束</td><td>用户可绕过 UI；数据归属、租户与业务唯一性由服务端验证。</td></tr>
+    </tbody>
+  </table>
+  <p class="caption">依据：<a href="https://javaguide.cn/java/basis/java-basic-questions-02.html">对象与接口</a>、<a href="https://javaguide.cn/java/basis/generics-and-wildcards.html">泛型</a>、<a href="https://javaguide.cn/java/basis/bigdecimal.html">金额</a>、<a href="https://javaguide.cn/system-design/framework/spring/spring-knowledge-and-questions-summary.html">Spring Bean</a>、<a href="https://javaguide.cn/system-design/security/data-validation.html">服务端校验</a>。</p>
+
+  <h2 id="glossary">本课程统一用语</h2>
+  <table>
+    <thead><tr><th scope="col">术语</th><th scope="col">在课程中的含义</th></tr></thead>
+    <tbody>
+      <tr><td>Controller</td><td>HTTP 入口，负责路由、参数绑定与调用下层；先看请求与响应契约。</td></tr>
+      <tr><td>AppService</td><td>公司应用服务层的命名/注解，按当前源码观察其编排职责；具体拦截行为另查公司实现。</td></tr>
+      <tr><td>Service</td><td>业务服务。公司分层不完全一致，最终职责以代码和领域文档为准。</td></tr>
+      <tr><td>DAO / Mapper</td><td>数据访问接口；本工程常见 BaseMybatisDao 封装。查询引擎另有执行入口。</td></tr>
+      <tr><td>DTO / Entity</td><td>DTO 用于传递数据；持久化 Entity 对应存储模型。公司“实体域”还可能指元数据业务对象，需看上下文。</td></tr>
+      <tr><td>Bean / DI</td><td>Spring 管理的对象 / 依赖注入；源码实现关系与运行时选中的对象分别核验。</td></tr>
+      <tr><td>事务</td><td>将相关数据库操作组织成有明确提交/回滚边界的工作单元，不能替代权限或接口幂等。</td></tr>
+      <tr><td>验收 / 复查</td><td>验收看当次独立能力；复查看间隔之后能否再次正确使用。两者分开记录。</td></tr>
+    </tbody>
+  </table>
+  <p class="caption">依据：<a href="https://javaguide.cn/system-design/framework/spring/ioc-and-aop.html">IoC/DI</a>、<a href="https://javaguide.cn/system-design/framework/mybatis/mybatis-interview.html">MyBatis</a>、<a href="https://javaguide.cn/system-design/framework/spring/spring-transaction.html">事务</a>与<a href="../PROJECT_MAP.md">公司源码</a>。</p>
+
+  <h2 id="trace">接手接口时的五个定位动作</h2>
+  <ol>
+    <li>从前端请求找到 Controller 的路由与方法，确认输入和响应。</li>
+    <li>沿 import / IDE 跳转确认完整包名，再找接口对应实现。</li>
+    <li>追踪校验、身份/数据权限、业务分支、事务与持久化边界。</li>
+    <li>取得真实 SQL、日志或调试证据；标出尚未进入的外部组件。</li>
+    <li>用正常、边界与失败路径验证，记录实际运行结果及需要的帮助。</li>
+  </ol>
+  <div class="callout"><p><strong>第一课只做前两步。</strong>从 <a href="../lessons/0001-trace-java-interface.html#practice">一张三节点图</a>开始，后续逐层扩展。不清楚的地方可以随时向导师追问。</p></div>
+  <footer>此页用于检索和打印。正式状态以 <a href="../PROGRESS.md">PROGRESS.md</a> 为准。</footer>
+</main>
+</body>
+</html>

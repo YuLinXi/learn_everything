@@ -1,0 +1,95 @@
+{
+  "time": "2026-11-01T13:20:35.250720+08:00",
+  "cwd": "/Users/yu/Desktop/yumengyuan/learn_everything/java",
+  "source": "/Users/yu/Desktop/yumengyuan/learn_everything/java/practice/practice/m00_2/ValidationDemo.java",
+  "source_sha256": "55e545306c4a2eed149c9d96d43f69be1084cf55e611f192ce058da247bf6148",
+  "actor": "assistant verification; separate from user records",
+  "cases": [
+    {
+      "name": "normal",
+      "command": [
+        "/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home/bin/java",
+        "-cp",
+        "/var/folders/yx/jf84mf0d6gd0hsk5wpftv2rm0000gn/T/java-m002-verify-dlzzxs3r",
+        "m00_2.ValidationDemo",
+        "  基本信息  "
+      ],
+      "exit_code": 0,
+      "stdout": "基本信息\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "name": "empty",
+      "command": [
+        "/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home/bin/java",
+        "-cp",
+        "/var/folders/yx/jf84mf0d6gd0hsk5wpftv2rm0000gn/T/java-m002-verify-dlzzxs3r",
+        "m00_2.ValidationDemo",
+        ""
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Exception in thread \"main\" java.lang.IllegalArgumentException: group name must not be blank\n\tat m00_2.ValidationDemo.requireGroupName(ValidationDemo.java:8)\n\tat m00_2.ValidationDemo.main(ValidationDemo.java:16)\n",
+      "passed": true
+    },
+    {
+      "name": "spaces",
+      "command": [
+        "/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home/bin/java",
+        "-cp",
+        "/var/folders/yx/jf84mf0d6gd0hsk5wpftv2rm0000gn/T/java-m002-verify-dlzzxs3r",
+        "m00_2.ValidationDemo",
+        "   "
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Exception in thread \"main\" java.lang.IllegalArgumentException: group name must not be blank\n\tat m00_2.ValidationDemo.requireGroupName(ValidationDemo.java:8)\n\tat m00_2.ValidationDemo.main(ValidationDemo.java:16)\n",
+      "passed": true
+    },
+    {
+      "name": "null",
+      "command": [
+        "/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home/bin/java",
+        "-cp",
+        "/var/folders/yx/jf84mf0d6gd0hsk5wpftv2rm0000gn/T/java-m002-verify-dlzzxs3r",
+        "m00_2.ValidationDemo"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Exception in thread \"main\" java.lang.IllegalArgumentException: group name must not be blank\n\tat m00_2.ValidationDemo.requireGroupName(ValidationDemo.java:8)\n\tat m00_2.ValidationDemo.main(ValidationDemo.java:16)\n",
+      "passed": true
+    },
+    {
+      "name": "internal_spaces",
+      "command": [
+        "/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home/bin/java",
+        "-cp",
+        "/var/folders/yx/jf84mf0d6gd0hsk5wpftv2rm0000gn/T/java-m002-verify-dlzzxs3r",
+        "m00_2.ValidationDemo",
+        "  基本 信息  "
+      ],
+      "exit_code": 0,
+      "stdout": "基本 信息\n",
+      "stderr": "",
+      "passed": true
+    }
+  ],
+  "compile": {
+    "command": [
+      "/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home/bin/javac",
+      "--release",
+      "8",
+      "-encoding",
+      "UTF-8",
+      "-g",
+      "-d",
+      "/var/folders/yx/jf84mf0d6gd0hsk5wpftv2rm0000gn/T/java-m002-verify-dlzzxs3r",
+      "/Users/yu/Desktop/yumengyuan/learn_everything/java/practice/practice/m00_2/ValidationDemo.java"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "警告: [options] 源值 8 已过时，将在未来发行版中删除\n警告: [options] 目标值 8 已过时，将在未来发行版中删除\n警告: [options] 要隐藏有关已过时选项的警告, 请使用 -Xlint:-options。\n3 个警告\n"
+  },
+  "class_major_version": 52
+}
