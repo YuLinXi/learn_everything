@@ -1,5 +1,7 @@
 # M00.1 · 沿 import 找到接口与实现
 
+原始课件：[沿 import 找到接口与实现](../../../lessons/0002-m00-1-interface-and-implementation.md)。
+
 ## 本章作业要求
 
 目标：从 Controller 中的一次方法调用，找到它依赖的接口和对应实现，区分变量的声明类型与实现方法所在的位置。对应 [ROADMAP M00.1](../../../ROADMAP.md#m00-1)。

@@ -1,5 +1,7 @@
 # M00.2 · JDK、编译与调试
 
+原始课件：[JDK、编译运行与调试](../../../lessons/0003-m00-2-jdk-compile-and-debug.md)。
+
 ## 本章作业要求
 
 目标：区分开发工具、编译与运行环境，亲手编译运行 Java 方法并定位错误。对应 [ROADMAP M00.2](../../../ROADMAP.md#m00-2)。本文件按题号逐步追加，正式状态见 [PROGRESS](../../../PROGRESS.md)。

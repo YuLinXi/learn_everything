@@ -1,5 +1,7 @@
 # M00.3 · Maven 的项目、依赖与生命周期
 
+原始课件：[Maven 项目、依赖与生命周期](../../../lessons/0004-m00-3-maven-build-and-lifecycle.md)、[聚合、继承与模块依赖](../../../lessons/0005-m00-3-maven-modules-and-dependencies.md)。
+
 ## 本章作业要求
 
 目标：用 Maven 组织已完成的 Java 程序，区分编译、测试阶段与打包；之后再定位公司多模块 POM。对应 [ROADMAP M00.3](../../../ROADMAP.md#m00-3)，正式状态见 [PROGRESS](../../../PROGRESS.md)。

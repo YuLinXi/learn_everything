@@ -6,44 +6,18 @@
 
 本章分块进行。本次只做 Q01 的可空字段转换；整数除法、数值截断和越界将在后续练习中展开。保存代码并告知完成即可，核验与学习记录由导师处理。
 
-## 本次限定阅读（15–20 分钟）
+## 本次课件与阅读
 
-主资料：[JavaGuide · Java 基础面试题（上）](https://javaguide.cn/java/basis/java-basic-questions-01.html)。按下列顺序跳读，不从文章开头通读：
+原始课件：[M01.1 · 可空字段、拆装箱与默认值](../../../lessons/0001-m01-1-null-and-unboxing.md)。
 
-1. 从 **“Java 中的几种基本数据类型了解么？”** 开始，读完 **“基本类型和包装类型的区别？”**，到 **“包装类型的缓存机制了解么？”** 标题前停止。了解八种类型，重点辨认 int/Integer、long/Long、boolean/Boolean；无需背完整范围表。
-2. 跳过缓存机制，完整阅读 **“自动装箱与拆箱了解吗？原理是什么？”**，到 **“为什么浮点数运算的时候会有精度丢失的风险？”** 标题前停止。重点看赋值触发转换和 null 拆箱风险，字节码指令只需浏览。
-3. 跳到 **“⭐️ 成员变量与局部变量的区别？”**，读完这一节，到 **“静态变量有什么作用？”** 标题前停止。重点区分字段默认值与局部变量必须先赋值。
-
-本次跳过包装缓存、浮点精度、BigDecimal、超过 long 范围的数据，以及后续方法章节；不展开文中外链。下一块再补整数运算。
-
-## 先理解这几个区别
-
-| Java 类型 | 可以取的值 | 能否为 null |
-| --- | --- | --- |
-| long | 64 位整数值 | 不能 |
-| Long | long 的包装对象引用 | 可以 |
-| boolean | true 或 false | 不能 |
-| Boolean | true、false 或 null | 可以 |
-
-对照 TypeScript：本题的输入可以近似理解为 `{ entityId: number | null; enabled?: boolean | null }`，但这只类比可空契约；Java long 的范围与 JS number 的整数精度不同。Java 没有 undefined，本题在手动创建输入对象时用 null 表示未提供；真实 JSON 如何映射留到 Web 章节验证。
-
-```java
-Long wrapped = 42L;   // long -> Long，装箱；L 表示 long 字面量
-long value = wrapped; // Long -> long，拆箱
-
-Boolean flag = null;
-// boolean enabled = flag; // 若执行，会在拆箱时抛 NullPointerException
-```
-
-Boolean 的 null 与 false 含义不同，默认值处理应保留用户明确提交的 false。字段如 `public Boolean enabled;` 默认是 null；方法里的局部变量必须先赋值才能使用，不能套用字段的默认初始化规则。
-
-导师核对依据：[JLS 5.1.8 拆箱](https://docs.oracle.com/javase/specs/jls/se8/html/jls-5.html#jls-5.1.8)、[JLS 4.12.5 初始值](https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.12.5)，无需另读规范。
+请先完成课件中的限定阅读与概念示例，再进行下方 Q01。阅读起止标题、TS 对照、拆装箱示例和补查依据统一保存在课件中；导师也会直接在当前会话呈现本次课件内容。
 
 ## 工程与索引
 
 本章独立 [Maven 工程](project/pom.xml) 沿用 M00.4 的配置：JDK 21、Java 8 编译目标、JUnit Jupiter 5.13.4、Surefire 3.5.4。配置及测试由导师提供，不计学生实现。
 
 - [Q01 · 修复 DTO 转换中的空值与默认值](#q01)
+- [Q02 · 调换校验顺序会发生什么](#q02)
 
 <a id="q01"></a>
 
@@ -82,6 +56,38 @@ Q01 通过后再做一次有针对性的理解检查及数值边界练习；本�
 
 ### 验收反馈
 
-待用户修改代码，尚未评分。类型结构、初始错误实现和测试均为导师提供，不作为用户独立代码证据。
+Q01 代码验收通过。用户已保存 input 判空、entityId 校验与 enabled 默认值处理；明确的 false 被保留，合法 long 值未缩窄，返回新的结果对象且没有修改输入。实现按已提交代码记录，类型结构、初始错误实现和测试为导师提供。
 
 导师模板预检：临时副本中执行 `mvn -B -ntp test`，发现 6 个测试，2 个通过、3 个断言失败、1 个空指针错误，跳过数为 0，符合初始版本缺少校验与默认值处理的预期。工程可编译、测试可发现；该结果不计用户练习证据。
+
+本次提交核验：导师以 JDK 21 在当前工程的临时副本执行 `mvn -B -ntp clean test`，退出码 0，6 个测试全部通过，Failures=0、Errors=0、Skipped=0。用户源码与测试未修改；这是导师运行证据。Q02 理解检查及后续数值边界尚未完成，本章保持学习中。
+
+<a id="q02"></a>
+
+## Q02 · 调换校验顺序会发生什么
+
+### 作业要求
+
+保留前面的 input 判空逻辑，只把 entityId 的条件改成：
+
+```java
+if (input.entityId <= 0 || input.entityId == null) {
+    throw new IllegalArgumentException("entityId must be positive");
+}
+```
+
+假设 input 本身不为 null，但 input.entityId 为 null，这段代码会抛出这里写的 IllegalArgumentException 吗？用 1–2 句话说明执行过程。
+
+只看题面判断，直接在对话回答；无需运行或修改原文件。
+
+### 我的解答
+
+> 不会，代码是自上往下同步执行的，这里会直接报空指针的错误
+
+### 验收反馈
+
+Q02 结果判断正确，通过。用户独立判断不会执行题面中的 IllegalArgumentException，而会先出现空指针异常。
+
+导师补充更准确的机制：“自上往下同步执行”不足以描述同一表达式内的顺序；`||` 先求值左侧。`input.entityId <= 0` 会将 Long 拆箱为 long，可按 `input.entityId.longValue() <= 0` 理解。entityId 为 null 时，此处抛 NullPointerException，右侧判空及 if 分支体均不会执行。原实现把判空放在左边，null 时左侧为 true，`||` 短路跳过右侧比较。拆箱细节与短路解释为导师补充，不记为用户原话。
+
+第一学习块的代码与结果判断通过；本章后续仍需整数除法、数值截断与边界练习。

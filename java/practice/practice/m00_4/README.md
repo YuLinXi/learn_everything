@@ -1,5 +1,7 @@
 # M00.4 · 第一次可重复的单元测试
 
+原始课件：[JUnit、断言与测试失败判断](../../../lessons/0006-m00-4-junit-and-test-failures.md)。
+
 ## 本章作业要求
 
 目标：将名称校验规则写成可重复运行的 JUnit 测试，理解断言保护的业务约定。对应 [ROADMAP M00.4](../../../ROADMAP.md#m00-4)，正式状态见 [PROGRESS](../../../PROGRESS.md)。
